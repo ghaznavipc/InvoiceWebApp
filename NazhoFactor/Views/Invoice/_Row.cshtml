@@ -1,0 +1,43 @@
+﻿@model RowVM
+
+<div class="form-floating col-xl p-0">
+	<input asp-for="Title" type="text" list="products" placeholder="نام محصول یا خدمت" class="form-control pt-xl-2" autocomplete="off" />
+	<label asp-for="Title" class="d-xl-none small fw-semibold"></label>
+	<span asp-validation-for="Title" class="form-text"></span>
+</div>
+<div class="form-floating col p-0">
+	<input asp-for="PriceForEach" placeholder="قیمت هر واحد" class="form-control py-xl-0" type="text" step="any" />
+	<label asp-for="PriceForEach" class="d-xl-none" class="d-xl-none"></label>
+	<span asp-validation-for="PriceForEach" class="form-text"></span>
+</div>
+<div class="form-floating col-auto p-0">
+	<input asp-for="Quantity" placeholder="تعداد" class="form-control py-xl-0" style="max-width: 5rem;" type="text" syze="0" />
+	<label asp-for="Quantity" class="d-xl-none"></label>
+	<span asp-validation-for="Quantity" class="form-text" class="form-text"></span>
+</div>
+<div class="form-floating col-xl px-1">
+	<input name="PriceForAll" placeholder="قیمت کل" class="form-control-plaintext py-xl-0" type="text" step="any" tabindex="-1" readonly />
+	<label asp-for="PriceForAll" class="d-xl-none"></label>
+</div>
+<div class="form-floating col-xl p-0">
+	<input asp-for="Discount" placeholder="مبلغ تخفیف" class="form-control py-xl-0" type="text" step="any" />
+	<label asp-for="Discount" class="d-xl-none"></label>
+	<span asp-validation-for="Discount" class="form-text"></span>
+</div>
+<div class="form-floating col-xl px-1">
+	<input name="PriceAterDiscounts" placeholder="بعد از تخفیف" class="form-control-plaintext py-xl-0" type="text" step="any" tabindex="-1" readonly />
+	<label for="PriceAterDiscounts" class="d-xl-none">قیمت بعد از تخفیف</label>
+</div>
+<div class="form-floating col-auto p-0">
+	<input asp-for="TaxPercent" placeholder="مالیات درصد" class="form-control py-xl-0" style="max-width: 6rem;" type="text" step="any" />
+	<label asp-for="TaxPercent" class="d-xl-none small"></label>
+	<span asp-validation-for="TaxPercent" class="form-text"></span>
+</div>
+<div class="form-floating col px-1">
+	<input name="TaxPrice" placeholder="مالیات مبلغ" class="form-control-plaintext py-xl-0" type="text" step="any" tabindex="-1" readonly />
+	<label asp-for="TaxPrice" class="d-xl-none"></label>
+</div>
+<div class="form-floating col-xl px-1">
+	<input name="FinalPriceOfRow" placeholder="قیمت نهایی ردیف" class="form-control-plaintext py-xl-0" type="text" step="any" tabindex="-1" readonly />
+	<label asp-for="FinalPriceOfRow" class="d-xl-none"></label>
+</div>

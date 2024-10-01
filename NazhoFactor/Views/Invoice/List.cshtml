@@ -1,0 +1,73 @@
+﻿@model IEnumerable<InvoiceOverviewVM>
+
+@{
+	ViewData["Title"] = "لیست فاکتورها";
+}
+
+<div class="container">
+	<div class="row align-items-center my-4 gap-3 gap-sm-0">
+		<h2 class="col-sm-6">@ViewData["Title"]</h2>
+		<div class="col-sm-6 text-sm-end">
+			<a asp-action="Create" class="btn rounded-pill shadow-lg"><i class="bi bi-plus-lg"></i> ثبت فاکتور جدید</a>
+		</div>
+	</div>
+	@if (Model.Any())
+	{
+		<div class="table-responsive">
+			<table class="table table-borderless table-striped mb-5">
+				<thead>
+					<tr>
+						<th>@Html.DisplayNameFor(model => model.First().InvoiceNumber)</th>
+						<th>@Html.DisplayNameFor(model => model.First().CustomerFullName)</th>
+						<th>@Html.DisplayNameFor(model => model.First().FinalPrice)</th>
+						<th>@Html.DisplayNameFor(model => model.First().CurrencyType)</th>
+						<th>@Html.DisplayNameFor(model => model.First().InvoiceType)</th>
+						<th>@Html.DisplayNameFor(model => model.First().SubmitDate)</th>
+						<th>@Html.DisplayNameFor(model => model.First().PreviousInvoiceNumber)</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var invoice in Model)
+					{
+						<tr>
+							<td>@invoice.InvoiceNumber.ToString().En2Fa()</td>
+							<td>@invoice.CustomerFullName</td>
+							<td>@invoice.FinalPrice.ToNumeric().En2Fa()</td>
+							<td>@invoice.CurrencyType.ToDisplay()</td>
+							<td>@invoice.InvoiceType.ToDisplay()</td>
+							@if (invoice.SubmitDate.HasValue)
+							{
+								<td>@invoice.SubmitDate.ToPersianDate().En2Fa()</td>
+							}
+							else
+							{
+								<td></td>
+							}
+							<td>@invoice.PreviousInvoiceNumber?.ToString().En2Fa()</td>
+							<td class="btn-group">
+								<a class="btn btn-success" asp-action="index" asp-route-id="@invoice.InvoiceNumber">
+									<i class="bi bi-eye-fill"></i>
+								</a>
+								<a class="btn btn-dark" asp-action="Update" asp-route-id="@invoice.InvoiceNumber">
+									<i class="bi bi-pencil-fill"></i>
+								</a>
+								<a class="btn btn-danger" asp-action="Delete" asp-route-id="@invoice.InvoiceNumber">
+									<i class="bi bi-trash-fill"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-light my-5">
+			<p class="alert-heading">هنوز فاکتوری ننوشته‌اید...</p>
+			<a class="btn btn-success" asp-action="create">یک فاکتور بنویسید!</a>
+		</div>
+
+	}
+</div>

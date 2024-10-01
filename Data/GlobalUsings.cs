@@ -1,0 +1,12 @@
+﻿global using System;
+global using System.Linq;
+global using System.Collections.Generic;
+global using System.Data;
+global using System.Reflection;
+global using Entities;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Common.Utilities;
+global using System.Linq.Expressions;
+global using System.Threading;
+global using System.Threading.Tasks;

@@ -1,0 +1,35 @@
+﻿body {
+    font-family: Sahel, Vazir, 'B Nazanin';
+}
+main {
+    min-height: 600px;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    text-align: end;
+}
+
+.scale-lg {
+    transform: scale(1.25);
+}
+.scale-xl {
+    transform: scale(1.5);
+}
+
+.form-control.input-validation-error {
+    box-shadow: 0 0 3px rgba(255, 0, 0, 0.35);
+}
+
+.clicky:hover {
+    transform: translateY(1px);
+}
+.clicky:active {
+    transform: translateY(3px);
+}

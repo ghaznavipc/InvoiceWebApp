@@ -1,0 +1,18 @@
+﻿@{
+	ViewData["Title"] = "تأیید ایمیل";
+}
+
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">تأیید ایمیل</div>
+				<div class="card-body">
+					<p>لطفاً برای تأیید ایمیل خود، بر روی لینک تأیید کلیک کنید که به ایمیل شما ارسال شده است.</p>
+					<p>@Model</p>
+					<p>اگر ایمیلی دریافت نکردید، <a asp-action="ResendEmailConfirmation" asp-controller="Account">اینجا</a> کلیک کنید تا ایمیل تأیید دوباره ارسال شود.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

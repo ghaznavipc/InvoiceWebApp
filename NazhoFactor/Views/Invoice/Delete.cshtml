@@ -1,0 +1,59 @@
+﻿@model InvoiceDeleteVM
+
+<div class="container mt-5">
+	
+	<div class="card">
+		<noscript class="bg-warning-subtle border-start border-warning p-2 m-2">جاوااسکریپت غیرفعال است. می‌توانید برای عملکرد صحیح نرم‌افزار از داخل تنظیمات مرورگرتان فعالش نمایید.</noscript>
+		<form autocomplete="off" method="post">
+			<div class="card-header">
+				<h4 class="card-title my-3">شما قصد پاک نمودن @Model?.InvoiceType?.ToDisplay() به شماره @Model?.InvoiceNumber به مبلغ @Model?.FinalPrice?.ToNumeric() @Model?.CurrencyType?.ToDisplay() را دارید.</h4>
+			</div>
+			<div class="card-body">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<p class="card-text user-select-none">اگر نسبت به حذف خود اطمینان دارید عبارت «پاک شود» را در محوطه‌ی مشخص شده بنویسید و گزینه‌ی «حذف» را انتخاب نمایید.</p>
+				<input type="hidden" asp-for="InvoiceNumber" />
+				<input type="hidden" asp-for="InvoiceType" />
+				<input type="hidden" asp-for="CurrencyType" />
+				<input asp-for="DeleteText" class="form-control form-control-lg" id="deleteText" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" />
+				<span asp-validation-for="DeleteText" class="text-danger ps-2"></span>
+				<div>
+					<small>* فاکتورها و پیش‌فاکتورهایی که ثبت نهایی شده‌اند برای اینکه از نظر قانونی قابل پیگیری باشند از پایگاه داده حذف نخواهد شد بلکه فقط از لیست فاکتورهایتان برداشته می‌شود.</small>
+				</div>
+			</div>
+			<div class="card-footer">
+				<a type="button" class="card-link btn btn-lg btn-dark" asp-action="list" >انصراف</a>
+				<button type="submit" class="card-link btn btn-lg btn-outline-danger" disabled id="deleteButton">حذف</button>
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		<div class="col">
+		</div>
+	</div>
+</div>
+
+
+@section Scripts {
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Attach input event handlers to relevant input fields for each row
+			let input = document.getElementById('deleteText');
+			input.addEventListener('input', checkDeleteText );
+
+		});
+		function checkDeleteText() {
+			const btn = document.getElementById('deleteButton');
+			let txt = document.getElementById('deleteText').value;
+			
+			if (txt == 'پاک شود') {
+				btn.removeAttribute('disabled');
+			} else {
+				btn.setAttribute('disabled', null);
+			}
+		}
+	</script>
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

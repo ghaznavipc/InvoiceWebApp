@@ -1,0 +1,170 @@
+﻿@model InvoiceCreateVM
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card">
+	<div class="card-header bg-success-subtle">
+		<div class="row">
+			<p class="form-text">شماره‌فاکتور تکراری، صفر یا منفی در هنگام ثبت به صورت خودکار عوض خواهد شد.</p>
+			<div class="col-md-3">
+				<label asp-for="InvoiceNumber" class="form-label"></label>
+				<input asp-for="InvoiceNumber" class="form-control" type="number" required />
+				<span asp-validation-for="InvoiceNumber" class="form-text text-danger"></span>
+			</div>
+			<div class="col-md-3">
+				<label asp-for="InvoiceType" class="form-label">نوع فاکتور</label>
+				<select asp-for="InvoiceType" asp-items="Html.GetEnumSelectList<InvoiceType>()" class="form-select" required></select>
+				<span asp-validation-for="InvoiceType" class="form-text"></span>
+			</div>
+			<div class="col-md-3">
+				<label asp-for="CustomerFullName" class="form-label"></label>
+				<input asp-for="CustomerFullName" class="form-control" list="customers" autocomplete="off" />
+				@if (Model?.CustomerFullNames is not null)
+				{
+					<datalist id="customers">
+						@foreach (var customerName in Model.CustomerFullNames)
+						{
+							<option value="@customerName"></option>
+						}
+					</datalist>
+				}
+				<span asp-validation-for="CustomerFullName" class="form-text"></span>
+			</div>
+			@if (Model?.PreviousInvoiceNumber is not null)
+			{
+				<div class="col-md-3">
+					<label asp-for="PreviousInvoiceNumber" class="form-label"></label>
+					<div>@Model.PreviousInvoiceNumber</div>
+					<input asp-for="PreviousInvoiceNumber" class="form-control" type="hidden" readonly />
+					<span asp-validation-for="PreviousInvoiceNumber" class="form-text"></span>
+				</div>
+			}
+		</div>
+	</div>
+
+	<!-- Rows Section -->
+	<div class="card-body">
+		<div class="card-title">
+			<div class="row border-bottom align-items-center justify-content-end fs-1 gap-4 mb-4">
+				<div class="col">
+					<h2>ردیف‌ها</h2>
+				</div>
+				<div class="col-auto">
+					<a class="d-inline-flex clicky text-success" onclick="addNewRow('InvoiceRows')"><i class="bi bi-plus-square-fill"></i></a>
+				</div>
+				<div class="col-auto">
+					<a class="d-inline-flex clicky text-danger" onclick="deleteRow('InvoiceRows')"><i class="bi bi-dash-square-fill"></i></a>
+				</div>
+			</div>
+			<div class="row d-none d-xl-flex fw-bold">
+				<div class="col-auto">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.Title)</div>
+				<div class="col">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.PriceForEach)</div>
+				<div class="col-auto pe-5">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.Quantity)</div>
+				<div class="col">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.PriceForAll)</div>
+				<div class="col">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.Discount)</div>
+				<div class="col-auto">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.PriceAfterDiscounts)</div>
+				<div class="col">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.TaxPercent)</div>
+				<div class="col">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.TaxPrice)</div>
+				<div class="col-auto">@Html.DisplayNameFor(model => model.RowVMs.FirstOrDefault()!.FinalPriceOfRow)</div>
+			</div>
+
+		</div>
+		<section class="container-fluid" id="InvoiceRows">
+			@if (Model is not null && Model.RowVMs is not null)
+			{
+				@for (int i = 0; i < Model.RowVMs.Count; i++)
+				{
+					<div class="row invoice-row border-start border-3 rounded-3 border-success-subtle ps-2 ps-xl-0 my-4 my-xl-0" data-row-index="@i">
+						<partial name="_Row" for="RowVMs[i]" />
+					</div>
+				}
+			}
+			else
+			{
+				@for (int i = 0; i < 1; i++)
+				{
+					<div class="row invoice-row border-start border-3 rounded-3 border-success-subtle ps-2 ps-xl-0 my-4 my-xl-0" data-row-index="@i">
+						<partial name="_Row" for="RowVMs[i]" />
+					</div>
+				}
+			}
+		</section>
+		@if (Model?.ProductOrServiceTitles is not null)
+		{
+			<datalist id="products">
+				@foreach (var title in Model.ProductOrServiceTitles)
+				{
+					<option value="@title"></option>
+				}
+			</datalist>
+		}
+	</div>
+	<!-- Total Section -->
+	<div class="card-footer bg-success-subtle">
+		<div class="row mt-4">
+
+			<div class="col-md-6">
+				<label asp-for="Debit" class="form-label">میزان بدهی/طلب (عدد منفی: طلب)</label>
+				<input asp-for="Debit" class="form-control" type="text" step="any" />
+				<span asp-validation-for="Debit" class="form-text"></span>
+
+			</div>
+			<div class="col-md-6">
+				<label asp-for="Prepayment" class="form-label"></label>
+				<input asp-for="Prepayment" class="form-control" type="text" step="any" />
+				<span asp-validation-for="Prepayment" class="form-text"></span>
+			</div>
+
+			<div class="mb-3">
+				<label asp-for="Description" class="form-label"></label>
+				<textarea asp-for="Description" class="form-control" id="Description" rows="3"></textarea>
+			</div>
+		</div>
+		<div class="row mt-2">
+
+			<div class="col-md">
+				<div class="row">
+					<label name="TotalPriceWithoutTax" class="col-auto">جمع قیمت بدون احتساب مالیات:</label>
+					<input name="TotalPriceWithoutTax" class="col px-2 py-0 form-control-plaintext" type="text" step="any" readonly />
+				</div>
+			</div>
+			<div class="col-md">
+				<div class="row">
+					<label name="TotalOfTax" class="col-auto">جمع مالیات‌ها: </label>
+					<input name="TotalOfTax" class="col px-2 py-0 form-control-plaintext" type="text" step="any" readonly />
+				</div>
+			</div>
+			<div class="col-md">
+				<div class="row">
+					<label name="TotalPrice" class="col-auto">جمع قیمت نهایی ردیف‌ها:</label>
+					<input name="TotalPrice" class="col px-2 py-0 form-control-plaintext" type="text" step="any" readonly />
+				</div>
+			</div>
+		</div>
+		<div class="row row-cols-sm-auto fs-4 my-3">
+			<div class="col-sm">
+				<div class="row">
+					<label name="FinalPrice" class="col-auto">قیمت نهایی:</label>
+					<input name="FinalPrice" class="col px-2 py-0 form-control-plaintext" readonly />
+				</div>
+			</div>
+			<div class="col-sm">
+				<select asp-for="CurrencyType" asp-items="Html.GetEnumSelectList<CurrencyType>()" class="form-select" required></select>
+				<span asp-validation-for="CurrencyType"></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row align-items-center py-4">
+		<div class="col-sm form-check form-switch">
+			<input asp-for="WantToSubmit" class="form-check-input scale-lg" type="checkbox" role="switch" id="RememberMe">
+			<label asp-for="WantToSubmit" class="form-check-label ms-1"></label>
+			<p><small for="WantToSubmit" class="form-check-label ms-1">(فاکتورهایی که ثبت نهایی شده‌اند به طور کامل حذف نمی‌شوند. همچنین برای ویرایش نسخه‌ای جدید ساخته خواهد شد که به این فاکتور اشاره می‌کند.)</small></p>
+		</div>
+		<div class="col-sm-auto">
+			<button type="submit" class="btn btn-lg btn-primary">ثبت</button>
+		</div>
+	</div>
+</div>
+

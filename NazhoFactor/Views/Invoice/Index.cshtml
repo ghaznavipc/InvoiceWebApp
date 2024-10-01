@@ -1,0 +1,159 @@
+﻿@model InvoiceDetailsVM
+
+@{
+	ViewData["Title"] = "جزئیات فاکتور";
+}
+
+<div class="container-md my-5">
+	<div class="card" id="to-capture">
+		<div class="card-header">
+			<div class="row align-items-center gap-3">
+				<div class="col-md">
+					<div class="row">
+						<label asp-for="InvoiceNumber" class="col-auto"></label>
+						<input asp-for="InvoiceNumber" class="col px-2 py-0 form-control-plaintext" type="number" readonly />
+					</div>
+				</div>
+
+				<div class="col-md">
+					<div class="row">
+						<label asp-for="CustomerFullName" class="col-auto"></label>
+						<input asp-for="CustomerFullName" class="col px-2 py-0 form-control-plaintext" readonly />
+					</div>
+				</div>
+
+				<div class="col-md">
+					<div class="row">
+						<label asp-for="InvoiceType" class="col-auto"></label>
+						<input asp-for="InvoiceType" class="col px-2 py-0 form-control-plaintext" value="@Model.InvoiceType.ToDisplay()" readonly />
+					</div>
+				</div>
+
+				@if (Model.PreviousInvoiceNumber.HasValue)
+				{
+					<div class="col-md">
+						<div class="row">
+							<label asp-for="PreviousInvoiceNumber" class="col-auto"></label>
+							<input asp-for="PreviousInvoiceNumber" class="col px-2 py-0 form-control-plaintext" type="number" readonly />
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="table-responsive-md">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].Title)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].PriceForEach)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].Quantity)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].PriceForAll)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].Discount)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].PriceAfterDiscounts)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].TaxPercent)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].TaxPrice)</th>
+								<th>@Html.DisplayNameFor(model => model.RowVMs[0].FinalPriceOfRow)</th>
+							</tr>
+						</thead>
+						@foreach (var row in Model.RowVMs)
+						{
+							<tbody>
+								<tr>
+									<td>@row.Title</td>
+									<td>@row.PriceForEach?.ToNumeric().En2Fa()</td>
+									<td>@row.Quantity?.ToNumeric().En2Fa()</td>
+									<td>@row.PriceForAll?.ToNumeric().En2Fa()</td>
+									<td>@row.Discount?.ToNumeric().En2Fa()</td>
+									<td>@row.PriceAfterDiscounts?.ToNumeric().En2Fa()</td>
+									<td>@row.TaxPercent?.ToString().En2Fa()</td>
+									<td>@row.TaxPrice?.ToNumeric().En2Fa()</td>
+									<td>@row.FinalPriceOfRow?.ToNumeric().En2Fa()</td>
+								</tr>
+							</tbody>
+						}
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- Add more fields as needed -->
+		<div class="card-footer">
+			<div class="row">
+				<div class="col-md">
+					<label asp-for="TotalPriceWithoutTax"></label>
+					@Model.TotalPriceWithoutTax?.ToNumeric().En2Fa()
+				</div>
+				<div class="col-md">
+					<label asp-for="TotalOfTax"></label>
+					@Model.TotalOfTax?.ToNumeric().En2Fa()
+				</div>
+				<div class="col-md">
+					<label asp-for="TotalPrice"></label>
+					@Model.TotalPrice?.ToNumeric().En2Fa()
+				</div>
+				<div class="col-md">
+					<label asp-for="Debit"></label>
+					@Model.Debit.ToNumeric().En2Fa()
+				</div>
+
+				<div class="col-md">
+					<label asp-for="Prepayment"></label>
+					@Model.Prepayment.ToNumeric().En2Fa()
+				</div>
+
+				<!-- Add more fields as needed -->
+
+				<div class="col-md">
+					<label asp-for="FinalPrice"></label>
+					@Model.FinalPrice?.ToNumeric().En2Fa()
+				</div>
+
+				<div class="col-md">
+					<label asp-for="CurrencyType"></label>
+					@Model.CurrencyType.ToDisplay()
+				</div>
+
+				<div class="col-md">
+					<label asp-for="SubmitDate"></label>
+					@if (Model.SubmitDate.HasValue)
+					{
+						@Model.SubmitDate.ToPersianDate()
+					}
+					else
+					{
+						<div class="bg-warning-subtle">پیش‌نویس</div>
+					}
+				</div>
+
+
+			</div>
+			@if (Model.Description!.HasValue())
+			{
+				<div class="my-3">
+					<label asp-for="Description"></label>
+					<div>@Model.Description</div>
+				</div>
+			}
+		</div>
+	</div>
+	<button class="btn btn-outline-primary mt-5" onclick="capture()">عکس از جدول</button>
+</div>
+
+@section Scripts {
+	<script src="~/lib/dom-to-image/dist/dom-to-image.min.js"></script>
+	<script>
+		function capture() {
+			var node = document.getElementById('to-capture');
+
+			domtoimage.toJpeg(node, { quality: 0.95 })
+				.then(function (dataUrl) {
+					var link = document.createElement('a');
+
+					link.download = `Invoice Number ${@Model.InvoiceNumber} ${@DateTime.Now.ToPersianDate().Replace('/','_')}.jpg`;
+					link.href = dataUrl;
+					link.click();
+				});
+		}
+	</script>
+}

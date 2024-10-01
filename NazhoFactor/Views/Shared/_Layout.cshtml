@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="فاکتور, پیش فاکتور, فاکتور رسمی, حسابداری">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<!-- Title -->
+	<title>ناژوفاکتور - @ViewData["Title"]</title>
+
+	<!-- Favicon -->
+	<partial name="_Favicons" />
+
+	<!-- Stylesheet -->
+	<link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
+	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+	<link href="~/lib/sahel-font/dist/font-face.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+	<div id="modal-placeholder"></div>
+	<!-- Preloader -->
+	<div class="preloader">
+	</div>
+	<header>
+		<nav class="navbar navbar-expand-md bg-body-tertiary">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-controller="home" asp-action="index">
+					<img src="~/favicon-32x32.png" />
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<partial name="_NavItems" />
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<partial name="_NotificationPartial" />
+
+	<main>
+		@RenderBody()
+	</main>
+
+	<footer class="bg-dark-subtle">
+		<div class="container py-4">
+			<div class="row align-items-center">
+				<div class="col-md-8 mb-4">
+					<!-- Logo -->
+					<a href="/Home/Index" class="foo-logo d-block m-3">
+						<img src="~/android-chrome-192x192.png" />
+					</a>
+					<p>نرم‌افزار ناژوفاکتور با هدف ارائه بهترین نرم‌افزار برای امور فاکتورنویسی توسعه داده می‌شود. توسعه‌ی این نرم‌افزار توسط شرکت آروین بنیان ناژو صورت می‌گیرد.</p>
+
+				</div>
+
+				<div class="col-md-4">
+					<h6>اطلاعات تماس</h6>
+					<p>قائمشهر، پل تلار، مرکز رشد قائمشهر</p>
+					<p>موبایل و تلگرام 09382714500</p>
+					<p>آدرس ایمیل: ghaznavipc@gmail.com</p>
+					<!-- Footer Social Area -->
+					<cache>
+						<a href="#" class="facebook"><i class="bi-facebook text-secondary"></i></a>
+						<a href="#" class="google-plus"><i class="bi-google-plus text-secondary"></i></a>
+						<a href="#" class="instagram"><i class="bi-instagram text-secondary"></i></a>
+						<a href="#" class="twitter"><i class="bi-telegram text-secondary"></i></a>
+						<a href="#" class="linkedin"><i class="bi-linkedin text-secondary"></i></a>
+					</cache>
+				</div>
+			</div>
+		</div>
+
+		<!-- Copywrite Area -->
+		<div class="container-fluid text-center bg-secondary text-light">
+			<div class="row align-items-center">
+				<div class="col py-2">
+					&copy; همه حقوق محفوظ و متعلق به شرکت آروین بنیان ناژو می‌باشد
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+	<!-- ##### All Javascript Script ##### -->
+	<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+	@RenderSection("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+﻿<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Attach input event handlers to relevant input fields for each row
+		let rows = document.querySelectorAll('.invoice-row');
+		rows.forEach(function (row) {
+			let rowIndex = row.dataset.rowIndex;
+
+			row.querySelectorAll(`
+				input[name="RowVMs[${rowIndex}].PriceForEach"],
+				input[name="RowVMs[${rowIndex}].Quantity"],
+				input[name="RowVMs[${rowIndex}].Discount"],
+				input[name="RowVMs[${rowIndex}].TaxPercent"]`).forEach( function (input) {
+
+					updateCalculatedFields(rowIndex);
+					input.addEventListener('input', function () {
+					updateCalculatedFields(rowIndex);
+				});
+			});
+		});
+		document.querySelector('input[name="Debit"]').addEventListener('input', UpdateFinalPrice);
+		document.querySelector('input[name="Prepayment"]').addEventListener('input', UpdateFinalPrice);
+
+		// Function to update calculated fields for a specific row
+	});
+	function updateCalculatedFields(rowIndex) {
+		const priceForEachElement = document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].PriceForEach"]`);
+		const quantityElement =		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].Quantity"]`);
+		const discountElement =		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].Discount"]`);
+		const taxPercentElement =	document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].TaxPercent"]`);
+
+		const priceForEach = parseFloat(priceForEachElement.value.replace(',','')) || 0;
+		const quantity = parseFloat(quantityElement.value) || 1;
+
+		const priceForAll = priceForEach * quantity;
+
+		let discount = parseFloat(discountElement.value) || 0;
+		if (discount > priceForAll && priceForAll >= 0)
+			discount = priceForAll;
+
+		const taxPercent = parseFloat(taxPercentElement.value) || 0;
+		const priceAterDiscounts = priceForAll - discount;
+		const taxPrice = Math.floor(priceAterDiscounts * (taxPercent / 100));
+		const finalPriceOfRow = priceAterDiscounts + taxPrice;
+
+
+		// Update the readonly fields
+		priceForEachElement.value = priceForEach.toLocaleString();
+		quantityElement.value = quantity;
+		discountElement.value = discount;
+		taxPercentElement.value = taxPercent;
+
+		if (taxPercent > 100 || taxPercent < 0) taxPercentElement.classList.add('text-danger')
+		else taxPercentElement.classList.remove('text-danger')
+
+		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="PriceForAll"]`).value = priceForAll;
+		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="PriceAterDiscounts"]`).value = priceAterDiscounts;
+		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="TaxPrice"]`).value = taxPrice;
+		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="FinalPriceOfRow"]`).value = finalPriceOfRow;
+
+		UpdateTotalResults();
+	}
+	function UpdateTotalResults() {
+
+		// calculate totals
+		let totalPriceWithoutTax = 0;
+		document.querySelectorAll(`input[name="PriceAterDiscounts"]`).forEach(function (el) {
+			totalPriceWithoutTax += parseFloat(el.value) || 0;
+		});
+		let totalOfTax = 0;
+		document.querySelectorAll(`input[name="TaxPrice"]`).forEach(function (el) {
+			totalOfTax += parseFloat(el.value) || 0;
+		});
+		totalOfTax = Math.ceil(totalOfTax);
+		const totalPrice = totalPriceWithoutTax + totalOfTax;
+
+
+
+
+		// set them
+
+
+		document.querySelector(`input[name="TotalPriceWithoutTax"]`).value = totalPriceWithoutTax;
+		document.querySelector(`input[name="TotalOfTax"]`).value = totalOfTax;
+		document.querySelector(`input[name="TotalPrice"]`).value = totalPrice;
+
+		UpdateFinalPrice();
+	}
+	function UpdateFinalPrice() {
+		// get
+		const debitElement = document.querySelector(`input[name="Debit"]`);
+		const prepaymentElement = document.querySelector(`input[name="Prepayment"]`);
+
+		const debit = parseFloat(debitElement.value) || 0;
+		const prepayment = parseFloat(prepaymentElement.value) || 0;
+		const totalPrice = parseFloat(document.querySelector(`input[name="TotalPrice"]`).value) || 0;
+
+		// set
+		debitElement.value = debit;
+		prepaymentElement.value = prepayment;
+
+		document.querySelector(`input[name="FinalPrice"]`).value = (totalPrice + debit - prepayment).toLocaleString('fa-IR');
+	}
+
+	function addNewRow(tableID) {
+		let table = document.getElementById(tableID);
+		let newRowNumber = table.childElementCount;
+
+		var template = document.querySelector('.invoice-row');
+		var clone = template.cloneNode(true);
+
+		// Update data-row-index attribute
+		clone.dataset.rowIndex = newRowNumber;
+
+		// Update name attributes for inputs
+		clone.querySelectorAll('[name]').forEach(function (el) {
+			el.name = el.name.replace('[0]', `[${newRowNumber}]`);
+		});
+
+		// Update id attributes for inputs
+		clone.querySelectorAll('[id]').forEach(function (el) {
+			el.id = el.id.replace('_0__', `_${newRowNumber}__`);
+		});
+
+		// Update for attributes for labels
+		clone.querySelectorAll('[for]').forEach(function (el) {
+			el.htmlFor = el.htmlFor.replace('_0__', `_${newRowNumber}__`);
+		});
+
+		// Update data-valmsg-for attributes for validation messages
+		clone.querySelectorAll('[data-valmsg-for]').forEach(function (el) {
+			el.dataset.valmsgFor = el.dataset.valmsgFor.replace('[0]', `[${newRowNumber}]`);
+		});
+
+		// Add event listeners to new inputs
+		clone.querySelectorAll('input[name]').forEach(function (input) {
+			input.addEventListener('input', function () {
+				updateCalculatedFields(newRowNumber);
+			});
+		});
+
+		clone.querySelectorAll('input[type="text"], input[type="number"]').forEach(function (input) {
+			input.value = '';
+		});
+
+		// Append the cloned row to the table
+		table.appendChild(clone);
+	}
+
+	function deleteRow(tableID) {
+		try {
+			let table = document.getElementById(tableID);
+			let rowCount = table.childElementCount;
+			if (rowCount > 1) {
+				table.lastElementChild.remove();
+				UpdateTotalResults();
+			}
+			else {
+				alert("همه‌ی ردیف‌ها را نمی‌توان پاک کرد.");
+			}
+
+		} catch (e) {
+			alert(e);
+		}
+	}
+</script>
+@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

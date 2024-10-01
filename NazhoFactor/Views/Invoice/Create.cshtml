@@ -1,0 +1,25 @@
+﻿@model InvoiceCreateVM
+
+@{
+	ViewData["Title"] = "ایجاد فاکتور جدید";
+}
+
+<div class="container-lg">
+
+	<h2 class="border-start border-success ps-4 my-5">@ViewData["Title"]</h2>
+	<noscript>
+		<span class="border-start border-warning bg-warning-subtle p-2">
+			برای مشاهده‌ی فیلدهای محاسباتی و حذف ردیف‌های اضافی جاوااسکریپ را فعال نمایید.
+		</span>
+	</noscript>
+
+	<form asp-action="Create" method="post">
+		<partial name="_CreateUpdateInnerForm" for="@Model" />
+	</form>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_InvoiceScriptsPartial");
+	}
+}

@@ -1,0 +1,15 @@
+﻿@{
+	TempData["Type"] = TempData["Type"] ?? "default";
+}
+
+@if (TempData["Message"] is not null)
+{
+	<div class="container">
+		<div class="row">
+			<div class="alert alert-@TempData["Type"] alert-dismissible fade show my-4" role="alert">
+				@TempData["Message"]
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+	</div>
+}

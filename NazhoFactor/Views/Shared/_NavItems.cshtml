@@ -1,0 +1,34 @@
+﻿@if (User.Identity!.IsAuthenticated)
+{
+	<ul class="navbar-nav mx-auto gap-1 mb-1 mb-lg-0">
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" asp-controller="invoice" asp-action="List">لیست فاکتورها</a>
+		</li>
+		<li class="nav-item">
+
+			<a class="nav-link" aria-current="page" asp-controller="invoice" asp-action="create">ثبت فاکتور</a>
+		</li>
+	</ul>
+}
+else
+{
+	<ul class="navbar-nav me-auto gap-1 mb-1 mb-lg-0">
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" asp-controller="home" asp-action="index">خانه</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" asp-controller="home" asp-action="pricing">تعرفه</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" asp-controller="home" asp-action="aboutme">درباره ما</a>
+		</li>
+	</ul>
+}
+
+
+
+<div class="navbar-nav gap-1 text-lg-end">
+	<partial name="_LoginButton" />
+</div>
+
+

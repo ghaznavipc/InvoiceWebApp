@@ -1,0 +1,20 @@
+﻿
+@if (User.Identity!.IsAuthenticated)
+{
+    @* <a asp-controller="Account" class="icon-link text-success text-decoration-none"><i class="bi bi-person-fill" aria-hidden="true"></i>پنل کاربری</a> *@
+    <div class="nav-item">
+        <a asp-action="Index" asp-controller="Account" class="nav-link"><i class="bi bi-person-fill"></i> حساب کاربری</a>
+    </div>
+    <div class="nav-item">
+        <a asp-action="SignOut" asp-controller="Account" class="nav-link"><i class="bi bi-door-closed-fill"></i> خروج</a>
+    </div>
+}
+else
+{
+    <div class="nav-item">
+        <a asp-action="Login" asp-controller="Account" class="nav-link btn icon-link pt-1"><i class="bi bi-person-fill" aria-hidden="true"></i> ورود</a>
+    </div>
+    <div class="nav-item">
+        <a asp-controller="account" asp-action="Register" class="btn btn-success">رایگان شروع کنید</a>
+    </div>
+}
