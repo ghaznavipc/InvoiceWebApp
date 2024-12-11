@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <UserSecretsId>5f5ae6dd-00c2-47f1-9e6e-d9c9dd6c1ace</UserSecretsId>
     <StartupObject></StartupObject>
     <Nullable>enable</Nullable>
@@ -9,22 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
-  <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="8.0.6">
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+  <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="9.0.0">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WebFrameWork\WebFramework.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-
   
 </Project>

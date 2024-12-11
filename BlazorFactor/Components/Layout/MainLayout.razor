@@ -1,69 +1,0 @@
-﻿@inherits LayoutComponentBase
-
-
-<header>
-	<nav class="navbar navbar-expand-md bg-body-tertiary">
-		<div class="container-fluid">
-			<NavLink class="navbar-brand" href="" Match="NavLinkMatch.All">
-				<img src="/favicon-32x32.png" />
-			</NavLink>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<NavLinks />
-			</div>
-		</div>
-	</nav>
-</header>
-
-<partial name="_NotificationPartial" />
-
-<main>
-	@Body
-</main>
-
-<footer class="bg-dark-subtle">
-	<div class="container py-4">
-		<div class="row align-items-center">
-			<div class="col-md-8 mb-4">
-				<!-- Logo -->
-				<NavLink class="foo-logo d-block m-3" href="" Match="NavLinkMatch.All">
-					<img src="/android-chrome-192x192.png" />
-				</NavLink>
-				<p>نرم‌افزار ناژوفاکتور با هدف ارائه بهترین نرم‌افزار برای امور فاکتورنویسی توسعه داده می‌شود. توسعه‌ی این نرم‌افزار توسط شرکت آروین بنیان ناژو صورت می‌گیرد.</p>
-
-			</div>
-
-			<div class="col-md-4">
-				<h6>اطلاعات تماس</h6>
-				<p>قائمشهر، پل تلار، مرکز رشد قائمشهر</p>
-				<p>موبایل و تلگرام 09382714500</p>
-				<p>آدرس ایمیل: ghaznavipc@gmail.com</p>
-				<!-- Footer Social Area -->
-				<cache>
-					<a href="#" class="facebook"><i class="bi-facebook text-secondary"></i></a>
-					<a href="#" class="google-plus"><i class="bi-google-plus text-secondary"></i></a>
-					<a href="#" class="instagram"><i class="bi-instagram text-secondary"></i></a>
-					<a href="#" class="twitter"><i class="bi-telegram text-secondary"></i></a>
-					<a href="#" class="linkedin"><i class="bi-linkedin text-secondary"></i></a>
-				</cache>
-			</div>
-		</div>
-	</div>
-
-	<!-- Copywrite Area -->
-	<div class="container-fluid text-center bg-secondary text-light">
-		<div class="row align-items-center">
-			<div class="col py-2">
-				&copy; همه حقوق محفوظ و متعلق به شرکت آروین بنیان ناژو می‌باشد
-			</div>
-		</div>
-	</div>
-</footer>
-
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>

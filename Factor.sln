@@ -15,11 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyServices", "Services\MySe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NazhoFactor", "NazhoFactor\NazhoFactor.csproj", "{5698F22D-ACE7-458C-8D3B-89E67462F660}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorFactor", "BlazorFactor\BlazorFactor.csproj", "{16865778-507F-4C8A-9B17-1F0474C82A06}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4BCEE2D4-1FC6-4982-A125-FCB09EA8AFFD} = {4BCEE2D4-1FC6-4982-A125-FCB09EA8AFFD}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,10 +45,6 @@ Global
 		{5698F22D-ACE7-458C-8D3B-89E67462F660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5698F22D-ACE7-458C-8D3B-89E67462F660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5698F22D-ACE7-458C-8D3B-89E67462F660}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16865778-507F-4C8A-9B17-1F0474C82A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16865778-507F-4C8A-9B17-1F0474C82A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16865778-507F-4C8A-9B17-1F0474C82A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16865778-507F-4C8A-9B17-1F0474C82A06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
