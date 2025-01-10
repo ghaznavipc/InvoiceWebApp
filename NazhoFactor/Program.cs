@@ -9,14 +9,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
-var option = new DbContextOptionsBuilder<ApplicationDbContext>();
-option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string not found."));
+var option = new DbContextOptionsBuilder<ApplicationDbContext>()
+				.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")
+			?? throw new InvalidOperationException("Connection string not found."));
+
 using (var context = new ApplicationDbContext(option.Options))
 {
 	context.Database.Migrate();
 }
 
-builder.Services.AddCustomIdentity(siteSettings.Get<IdentitySettings>());
+builder.Services.AddCustomIdentity(siteSettings.Get<IdentitySettings>() ?? new());
 
 builder.Services.AddControllersWithViews(options =>
 {
@@ -82,47 +84,7 @@ using (var scope = app.Services.CreateScope())
 	var userManager = services.GetRequiredService<UserManager<User>>();
 	var roleManager = services.GetRequiredService<RoleManager<Role>>();
 
-	await RolesInitializer.InitializeAsync(userManager, roleManager);
+	await RolesInitializer.Initialize(userManager, roleManager);
 }
 
 await app.RunAsync();
-
-/*
-public class Program
-{
-public static int itest { get; set; }
-public static int MyProperty { get; set; }
-public static HttpContextAccessor h2 { get; set; }
-
-
-public static void Main(string[] args)
-{
-
-	IRepository<MasterSetting> mastersetting;
-
-	//   itest = tt.db.Set<MasterSetting>().FromSqlRaw("select * from MasterSettings").ToList().FirstOrDefault().CustomerID;
-	CreateHostBuilder(args).Build().Run();
-	//ViewData["customerId"] = 3;
-	//HttpContext.Session.SetString("SettingCustomerName", "3");
-
-}
-public static IHostBuilder CreateHostBuilder(string[] args) =>
-	Host.CreateDefaultBuilder(args)           
-		.ConfigureWebHostDefaults(webBuilder =>
-		{
-			webBuilder.UseStartup<Startup>()
-		   .UseKestrel(opt => {
-			   var sp = opt.ApplicationServices;
-
-		   using (var scope = sp.CreateScope)
-			   {
-				   var dbContext = scope.ServiceProvider.grt .get<ApplicationDbContext>();
-				   var e = dbContext.Certificates.FirstOrDefault();
-				   // now you get the certificates
-			   }
-		   });
-		});
-   
-
-}
-*/

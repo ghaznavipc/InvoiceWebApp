@@ -28,7 +28,7 @@
 		const discountElement =		document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].Discount"]`);
 		const taxPercentElement =	document.querySelector(`.invoice-row[data-row-index="${rowIndex}"] input[name="RowVMs[${rowIndex}].TaxPercent"]`);
 
-		const priceForEach = parseFloat(priceForEachElement.value.replace(',','')) || 0;
+		const priceForEach = parseFloat(priceForEachElement.value) || 0;
 		const quantity = parseFloat(quantityElement.value) || 1;
 
 		const priceForAll = priceForEach * quantity;
@@ -44,7 +44,7 @@
 
 
 		// Update the readonly fields
-		priceForEachElement.value = priceForEach.toLocaleString();
+		priceForEachElement.value = priceForEach;
 		quantityElement.value = quantity;
 		discountElement.value = discount;
 		taxPercentElement.value = taxPercent;

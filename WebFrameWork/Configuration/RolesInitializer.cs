@@ -4,30 +4,23 @@ namespace WebFramework.Configuration;
 
 public static class RolesInitializer
 {
-	public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<Role> roleManager)
+	public static async Task Initialize(UserManager<User> userManager, RoleManager<Role> roleManager)
 	{
 		string[] roleNames = { UserRole.Owner, UserRole.Admin, UserRole.VerifiedUser, UserRole.BaseUser };
 
-		IdentityResult roleResult;
-
-		foreach (var roleName in roleNames)
+		foreach (string roleName in roleNames)
 		{
 			var roleExist = await roleManager.RoleExistsAsync(roleName);
 
 			if (!roleExist)
-			{
-				// Create the roles and seed them to the database
-				roleResult = await roleManager.CreateAsync(new Role(roleName));
-			}
+				await roleManager.CreateAsync(new Role(roleName));
 		}
 
-		// Find the user with the admin email
-		User user = await userManager.FindByEmailAsync("ghaznavipc@gmail.com");
+		User? owner = await userManager.FindByEmailAsync("ghaznavipc@gmail.com");
 
-		// If the admin user does not exist, create it and assign the Admin role
-		if (user == null)
+		if (owner == null)
 		{
-			user = new()
+			owner = new()
 			{
 				UserName = "ghaznavipc@gmail.com",
 				FullName= "ghaznavipc",
@@ -38,8 +31,8 @@ public static class RolesInitializer
 				PhoneNumberConfirmed = true,
 			};
 
-			await userManager.CreateAsync(user, "gh8zn8V!");
-			await userManager.AddToRoleAsync(user, UserRole.Owner);
+			await userManager.CreateAsync(owner, "gh8zn8V!");
+			await userManager.AddToRoleAsync(owner, UserRole.Owner);
 		}
 	}
 }
