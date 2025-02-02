@@ -1,20 +1,20 @@
-﻿namespace NewsWebsite.Controllers;
+﻿namespace NazhoFactor.Controllers;
 
 [AllowAnonymous]
 public class HomeController : Controller
 {
-	public IActionResult Index()
-	{
+    public IActionResult Index()
+    {
         return View();
-	}
+    }
 
-	public IActionResult Pricing()
-	{
-		return View();
-	}
+    public IActionResult Pricing()
+    {
+        return View();
+    }
 
-	public IActionResult AboutMe()
-	{
-		return View();
-	}
+    public IActionResult AboutMe()
+    {
+        return View();
+    }
 }
