@@ -7,7 +7,7 @@ public class InvoiceController(IInvoiceService invoiceService) : Controller
 
 
     // GET: Invoice/List
-    [Route("[controller]")]
+    [HttpGet("[controller]")]
 	public async Task<ActionResult> List(CancellationToken cancellationToken)
 	{
 		var userId = User.Identity!.GetUserId().ToInt();
@@ -17,7 +17,7 @@ public class InvoiceController(IInvoiceService invoiceService) : Controller
 	}
 
     // GET: Invoice/5
-    [HttpGet("{controller}/{id:int:required}")]
+    [HttpGet("[controller]/{id:int:required}")]
 	public async Task<ActionResult> Index(int id, CancellationToken cancellationToken)
 	{
 		var userId = User.Identity!.GetUserId().ToInt();

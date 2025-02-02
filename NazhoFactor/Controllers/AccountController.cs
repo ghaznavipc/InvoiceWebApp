@@ -164,7 +164,6 @@ public class AccountController : Controller
 	[HttpPost]
 	public async Task<IActionResult> ConfirmEmail(string userId, string code)
 	{
-
 		if (userId == null || code == null)
 			return RedirectToAction("Index", "Home");
 
@@ -182,15 +181,7 @@ public class AccountController : Controller
 
 	public IActionResult VerifyPhoneNumber(string userId)
 	{
-		// Retrieve the verification code from TempData (in a real app, you'd retrieve it from a secure location)
-		int verificationCode = TempData["VerificationCode"] as int? ?? 0;
-
-		// For demonstration purposes, let's pass the verification code to the view
-		ViewBag.VerificationCode = verificationCode;
-
-		// In a real application, you'd typically load a view with a form for the user to enter the code.
-		// Here, we're just demonstrating the process.
-
+        ViewBag.VerificationCode = TempData["VerificationCode"] as int? ?? 0;
 		return View();
 	}
 
@@ -198,12 +189,10 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> VerifyPhoneNumber(string userId, int verificationCode)
 	{
-		// Retrieve the stored verification code (in a real app, you'd retrieve it from a secure location)
 		int storedVerificationCode = TempData["VerificationCode"] as int? ?? 0;
 
 		if (verificationCode == storedVerificationCode)
 		{
-			// Update the user's phone number confirmation status
 			var user = await _userManager.FindByIdAsync(userId);
 			if (user != null)
 			{
@@ -211,18 +200,12 @@ public class AccountController : Controller
 				await _userManager.UpdateAsync(user);
 			}
 
-			// Redirect the user to a success page or perform other actions
-
 			return RedirectToAction(nameof(PhoneNumberVerified));
 		}
 		else
 		{
-			// Handle incorrect verification code
-			ModelState.AddModelError("VerificationCode", "کد تأییدی که وارد نمودید اشتباه می‌باشد. لطفا مجددا تلاش بفرمایید.");
-
-			// In a real application, you might redirect the user back to the verification page with an error message.
-			// Here, for demonstration purposes, we redirect to the home page.
-			return RedirectToAction("Index", "Home");
+			ModelState.AddModelError("VerificationCode", "کد تأییدی که وارد نمودید اشتباه می‌باشد..");
+			return View();
 		}
 	}
 

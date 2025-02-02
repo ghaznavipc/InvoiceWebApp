@@ -8,34 +8,36 @@ public static class EnumExtensions
     {
         if (!typeof(T).IsEnum)
             throw new NotSupportedException();
+
         var EntityState = new SelectList(Enum.GetValues(typeof(T)).Cast<T>().Select(v => new SelectListItem
         {
             Text = v.ToString(),
             Value = Convert.ToInt32(v).ToString()
         }).ToList(), "Value", "Text");
+
         return new SelectList(EntityState, "Value", "Text");
     }
 
 
-    public static string GetDisplayName<T>(this T enumValue)
+    public static string GetDisplayName<T>(this T? enumValue)
         where T : struct, IConvertible
     {
         if (!typeof(T).IsEnum)
-            return null;
+            return string.Empty;
 
-        var Display = new DisplayAttribute();
-        var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+        var display = new DisplayAttribute();
+        var fieldInfo = enumValue?.GetType().GetField(enumValue.ToString() ?? string.Empty);
 
         if (fieldInfo != null)
         {
             var attrs = fieldInfo.GetCustomAttributes();
             if (attrs != null && attrs.Any())
             {
-                Display = (DisplayAttribute)attrs.FirstOrDefault();
+                display = (DisplayAttribute)attrs.First();
             }
         }
 
-        return Display.Name;
+        return display.Name ?? string.Empty;
     }
 
 

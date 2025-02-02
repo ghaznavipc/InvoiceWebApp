@@ -4,22 +4,19 @@ namespace Common.Utilities;
 
 public static class DateTimeExtentions
 {
-	/// <summary>تبدیل تاریخ میلادی به شمسی بدون ساعت</summary>
-	/// <result>1400/06/04</result>
-	public static string ToPersianDate(this DateTime? value)
-	{
-		if (value is null)
-			return string.Empty;
-		
-		PersianCalendar pc = new();
-		var date = value.GetValueOrDefault();
+    /// <summary>تبدیل تاریخ میلادی نال‌پذیر به شمسی بدون ساعت</summary>
+    /// <result>1400/06/04</result>
+    public static string ToPersianDate(this DateTime? dateTime)
+    {
+        if (dateTime is null)
+            return string.Empty;
 
-		return $"{pc.GetYear(date):0000}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
-	}
+        return dateTime.Value.ToPersianDate();
+    }
 
-	/// <summary>تبدیل تاریخ میلادی به شمسی بدون ساعت</summary>
-	/// <result>1400/06/04</result>
-	public static string ToPersianDate(this DateTime value)
+    /// <summary>تبدیل تاریخ میلادی به شمسی بدون ساعت</summary>
+    /// <result>1400/06/04</result>
+    public static string ToPersianDate(this DateTime value)
 	{
 		PersianCalendar pc = new();
 
@@ -34,7 +31,6 @@ public static class DateTimeExtentions
 		var dateParts = value.Split("/");
 		
 		return $"{dateParts[0]}/{dateParts[1]:00}/{dateParts[2]:00}";
-
 	}
 
 	public static string ToMiladiDate(this string value)

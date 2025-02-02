@@ -6,7 +6,7 @@ public class ApplicationIdentityErrorDescriber : IdentityErrorDescriber
 {
     public override IdentityError DuplicateUserName(string userName) => new() {Code = nameof(DuplicateUserName), Description = $"نام کاربری '{userName}' قبلا توسط شخص دیگری انتخاب شده است." };
 
-    public override IdentityError InvalidUserName(string userName) => new() { Code = nameof(InvalidUserName), Description = "نام کاربری باید شامل کاراکترهای (0-9) و (a-z) باشد." };
+    public override IdentityError InvalidUserName(string? userName) => new() { Code = nameof(InvalidUserName), Description = "نام کاربری باید شامل کاراکترهای (0-9) و (a-z) باشد." };
 
     public override IdentityError PasswordMismatch() => new() { Code = nameof(PasswordMismatch), Description = "نام کاربری یا کلمه‌ی عبور وارد شده صحیح نمی‌باشد(؟)" };
 

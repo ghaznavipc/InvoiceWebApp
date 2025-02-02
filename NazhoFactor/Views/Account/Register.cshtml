@@ -42,11 +42,11 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			document.getElementById('phone-email-error').textContent = 'شماره تلفن یا ایمیل قبلا ثبت شده است.';
+			document.getElementById('phone-email-error').textContent;
 			// Client-side validation for unique username
 			const btn = document.getElementById('submit');
 			const poe = document.getElementById('PhoneOrEmail')
-			poe.addEventListener('blur', checkPhoneOrEmail)
+			poe.addEventListener('input', checkPhoneOrEmail)
 
 			// Client-side validation for unique phone number or email
 

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Common.Utilities;
 
@@ -14,7 +15,47 @@ public static class StringExtensions
         return Convert.ToInt32(value);
     }
 
-	public static decimal ToLong(this string value)
+    /// <summary>will check if all characters are English Number</summary>
+    public static bool IsAllDigit(this string value)
+    {
+        return Regex.IsMatch(value, @"^\d+$");
+    }
+
+
+    /// <summary>will check if value is somewhat valid to be an Iranian national code</summary>
+    public static bool IsNationalCode(this string input)
+    {
+        if (input.Length is < 8 or > 10 && input.IsAllDigit())
+            return false;
+
+        if (input.Length == 8) input = '0' + input;
+        if (input.Length == 9) input = '0' + input;
+
+        string[] allEqual = { "0000000000", "1111111111", "2222222222", "3333333333", "4444444444", "5555555555", "6666666666", "7777777777", "8888888888", "9999999999" };
+        if (allEqual.Any(s => s == input))
+            return false;
+
+        int check = Convert.ToInt32(input.Substring(9, 1));
+        int sum = Enumerable.Range(0, 9)
+            .Select(x => Convert.ToInt32(input.Substring(x, 1)) * (10 - x))
+            .Sum() % 11;
+
+        return sum < 2 ? check == sum : check + sum == 11;
+    }
+
+
+    /// <summary>remove last N char from string</summary>
+    /// <param name="count">Number of char to delete from the last</param>
+    /// <returns>remaining value (empty if null or count > Length)</returns>
+    public static string RemoveLast(this string str, int count = 1)
+    {
+        if (!str.HasValue(false) || count > str.Length)
+            return string.Empty;
+
+        return str.Remove(str.Length - count);
+    }
+
+    public static decimal ToLong(this string value)
 	{
 		return Convert.ToInt64(value);
 	}
