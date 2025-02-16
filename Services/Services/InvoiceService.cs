@@ -42,31 +42,12 @@ public class InvoiceService : IInvoiceService
 	}
 	public async Task<bool> CreateAsync(InvoiceCreateVM vM, int userId, CancellationToken cancellationToken)
 	{
-		// manage InvoiceNumber (id)
-
 		if (vM.InvoiceNumber <= 0 || await AnyAsync(userId, vM.InvoiceNumber, cancellationToken))
 			vM.InvoiceNumber = GenerateUniqueId(userId);
 
+        await CreateNewCustomerIfNotAny(vM.CustomerFullName, userId, cancellationToken);
 
-
-		// manage customer name
-
-		if (vM.CustomerFullName.HasValue())
-		{
-			vM.CustomerFullName = vM.CustomerFullName.CleanString();
-
-			var customer = await _customerRepository.GetByIdAsync(cancellationToken, userId, vM.CustomerFullName);
-
-			if (customer is null)
-			{
-				customer = new Customer { UserId = userId, CustomerFullName = vM.CustomerFullName! };
-				await _customerRepository.AddAsync(customer, cancellationToken, saveNow: false);
-			}
-		}
-
-		// create invoice
-
-		ICollection<Row> rows = RowVMsToRows(vM, userId);
+        ICollection<Row> rows = RowVMsToRows(vM, userId);
 
 		var invoice = new Invoice()
 		{
@@ -88,11 +69,14 @@ public class InvoiceService : IInvoiceService
 		await _invoiceRepository.AddAsync(invoice, cancellationToken);
 		return true;
 	}
-	public async Task UpdateAsync(InvoiceCreateVM vM, int userId, CancellationToken cancellationToken)
+
+    public async Task UpdateAsync(InvoiceCreateVM vM, int userId, CancellationToken cancellationToken)
 	{
 		var invoice = await _invoiceRepository.GetByIdAsync(cancellationToken, userId, vM.InvoiceNumber);
 
-		ICollection<Row> rows = RowVMsToRows(vM, userId);
+        await CreateNewCustomerIfNotAny(vM.CustomerFullName, userId, cancellationToken);
+
+        ICollection<Row> rows = RowVMsToRows(vM, userId);
 
 		invoice.InvoiceNumber = vM.InvoiceNumber;
 		invoice.InvoiceType = vM.InvoiceType;
@@ -130,7 +114,24 @@ public class InvoiceService : IInvoiceService
 
 	}
 
-	private ICollection<Row> RowVMsToRows(InvoiceCreateVM vM, int userId)
+
+    private async Task CreateNewCustomerIfNotAny(string? customerFullName, int userId, CancellationToken cancellationToken)
+    {
+        if (customerFullName.HasValue())
+        {
+            customerFullName = customerFullName.CleanString();
+
+            var customer = await _customerRepository.GetByIdAsync(cancellationToken, userId, customerFullName);
+
+            if (customer is null)
+            {
+                customer = new Customer { UserId = userId, CustomerFullName = customerFullName };
+                await _customerRepository.AddAsync(customer, cancellationToken, saveNow: false);
+            }
+        }
+    }
+
+    private ICollection<Row> RowVMsToRows(InvoiceCreateVM vM, int userId)
 	{
 
 		ICollection<Row> rows = new List<Row>();
